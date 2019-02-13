@@ -22,7 +22,8 @@ public class Distance {
     //Tabu parameter for tabu search
     int tabu_horizon = 10;
 
-    public int calculateDistance(){
+    public void calculateDistance(){
+        System.out.println("inside distance class");
         //Initializing
         //creating random containers
         Node nodes[] = new Node[noOfContainers + 1];
@@ -38,6 +39,33 @@ public class Distance {
             );
         }
 
+        double[][] distanceMatrix = new double[noOfContainers + 1][noOfContainers + 1];
+        double delta_x,delta_y;
+        for(int i = 0; i<= noOfContainers; i++){
+            for(int j = i+1; j<=noOfContainers; j++){
+                //depot to next neighbor
+                delta_x = (nodes[i].node_x - nodes[j].node_x);
+                delta_y = (nodes[i].node_y - nodes[j].node_y);
+
+                double distance = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                distance = Math.round(distance); //to get distance in nearest integer value
+
+                distanceMatrix[i][j] = distance;
+                distanceMatrix[j][i] = distance;
+
+            }
+        }
+
+        int printMatrix = 1; //to print distance matrix.
+
+        if (printMatrix == 1){
+            for (int i =0; i<=noOfContainers; i++){
+                for (int j=0; j<=noOfContainers; j++){
+                    System.out.print(distanceMatrix[i][j] + "-");
+                }
+                System.out.println();
+            }
+        }
 
     }
 
