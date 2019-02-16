@@ -1,5 +1,6 @@
 package com.stackroute.routing;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class TabuSearch {
 
 
 
-    GreedySolution greedySolution = new GreedySolution();
+    //GreedySolution greedySolution = new GreedySolution();
     //Tabu parameter for tabu search
     int tabu_horizon = 10;
 
@@ -104,7 +105,7 @@ public class TabuSearch {
                     }
                 }
             }
-            for (int o = 0; o<tabuMatrix[0].length; 0++) {
+            for (int o = 0; o<tabuMatrix[0].length; o++) {
                 for (int p = 0; p<tabuMatrix[0].length ; p++) {
                     if (tabuMatrix[o][p] > 0){
                         tabuMatrix[o][p]--;
@@ -165,8 +166,32 @@ public class TabuSearch {
         this.vehicles = vehiclesForBestRoute;
         this.cost = bestSolutionCost;
 
+        try {
+            PrintWriter writer = new PrintWriter("pastSolutionsTabu.txt","UTF-8");
+            writer.println("Solutions"+"\t");
+            for (int i = 0; i<pastSolutions.size(); i++) {
+                writer.println(pastSolutions.get(i)+"\t");
+            }
+            writer.close();
+        }catch (Exception e) {
+
+        }
 
 
 
+
+    }
+    public void saveBestSolution() {
+        bestSolutionCost = cost;
+        for (int j=0 ; j<noOfVehicles; j++) {
+            vehiclesForBestRoute[j].Route.clear();
+            if (! vehicles[j].Route.isEmpty()) {
+                int routeSize = vehicles[j].Route.size();
+                for (int k = 0 ; k < routeSize ; k++) {
+                    Node n = vehicles[j].Route.get(k);
+                    vehiclesForBestRoute[j].Route.add(n);
+                }
+            }
+        }
     }
 }
